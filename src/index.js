@@ -1,3 +1,10 @@
+const showResponse = function(response){
+  const data = JSON.parse(response).map(country=>{
+    return "<li>"+country.name+"</li>";
+  });
+  document.querySelector('.data-text').innerHTML = data;
+}
+
 function get(url) {
   // create new promise
   return new Promise(function(resolve, reject) {
@@ -6,12 +13,14 @@ function get(url) {
     req.onload = function() {
       if (req.status === 200) {
         // resolve when status is successfull
+        // same response parameter will be passed to .then methods
         resolve(req.response);
       } else {
         reject(Error(req.statusText));
       }
     };
     req.onerror = function() {
+      // same req.statusText will be passes to .catch paremeters
       reject(Error(req.statusText));
     };
     req.send();
@@ -20,5 +29,11 @@ function get(url) {
 
 const btn = document.querySelector("div");
 btn.addEventListener("click", function() {
-  get("https://restcountries.eu/rest/v2/all");
+  get("https://restcountries.eu/rest/v2/all")
+    .then(function(response){
+      showResponse(response);
+    })
+    .catch(function(error){
+      console.log(error);
+    });
 });
