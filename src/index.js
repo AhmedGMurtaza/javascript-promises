@@ -16,6 +16,7 @@ function get(url) {
         // same response parameter will be passed to .then methods
         resolve(req.response);
       } else {
+        // same req.statusText parameter will be passed to catch()
         reject(Error(req.statusText));
       }
     };
@@ -30,9 +31,11 @@ function get(url) {
 const btn = document.querySelector("div");
 btn.addEventListener("click", function() {
   get("https://restcountries.eu/rest/v2/all")
+    // chaining callback
     .then(function(response){
       showResponse(response);
     })
+    // catching error
     .catch(function(error){
       console.log(error);
     });
