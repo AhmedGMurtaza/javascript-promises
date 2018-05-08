@@ -11,6 +11,7 @@ function get(url) {
     const req = new XMLHttpRequest();
     req.open("GET", url);
     req.onload = function() {
+      loader.style.display = 'none';
       if (req.status === 200) {
         // resolve when status is successfull
         // same response parameter will be passed to .then methods
@@ -28,8 +29,10 @@ function get(url) {
   });
 }
 
-const btn = document.querySelector("div");
+const btn = document.querySelector("#app");
+const loader = document.querySelector(".loader");
 btn.addEventListener("click", function() {
+  loader.style.display = 'block';
   get("https://restcountries.eu/rest/v2/all")
     // chaining callback
     .then(function(response){
